@@ -389,7 +389,6 @@ module blog_demo::bolg {
 
 ## 关注我们
 - 推特 https://twitter.com/SuiNetwork
-- 官方支持中文微信群  ![wechat_group_cn.jpg](images%2Fwechat_group_cn.jpg)
 - 官方中文支持Telegram  https://t.me/+U6IlwHdAeSRhYzc1
 - 官方社群支持 https://linktr.ee/sui_apac
 
@@ -398,7 +397,6 @@ module blog_demo::bolg {
 ## 联系我 UVD Sui技术大使
 - https://twitter.com/wangtxxl
 - https://t.me/wangtxxl
-- 微信 ![uvd_weichat.jpg](images%2Fuvd_weichat.jpg)
 
 
 
