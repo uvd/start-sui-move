@@ -11,9 +11,6 @@ module blog_demo::bolg {
         content: String
     }
 
-    public struct TimeEvent has copy,drop{
-        time:u64
-    }
 
     // add blog
     public entry fun add(title: String, content: String, ctx: &mut TxContext) {

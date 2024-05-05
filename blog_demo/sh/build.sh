@@ -15,17 +15,17 @@ sui client active-env
 
 
  sui client call --gas-budget 100000000 \
- --package  0xe67b9b5651c19ad164a9154c3977173c4ab0aa41c111aea382355ea25d8a3135 \
+ --package  0xfc4a00b76cc1a3cf0f1211b9c4679513652b3a57d200b89ea95d582e4868d243 \
  --module bolg \
  --function add \
  --args '很搞笑' '大家好'
 
 
  sui client call --gas-budget 100000000 \
- --package  0x1d9198fcc76e9c9fad06dcf49cc4815974ab46c495df53dec1d6bcab378b69da \
+ --package  0xfc4a00b76cc1a3cf0f1211b9c4679513652b3a57d200b89ea95d582e4868d243 \
  --module bolg \
  --function update_title \
- --args 0x0bf1e50d772d87c5c7c7c4351df68071122d2b59f05c36eded38b6680943348b  "我在测试跟新"
+ --args 0xbc5d7d6f8d947069758ab0af1ada13b3978ab1c2b0a3b48daa6a42a519321624  "我在测试跟新"
 
 
 
