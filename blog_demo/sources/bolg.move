@@ -5,13 +5,13 @@ module blog_demo::bolg {
     use sui::object;
     use sui::transfer;
 
-    struct Blog has key {
+    public struct Blog has key {
         id: UID,
         title: String,
         content: String
     }
 
-    struct TimeEvent has copy,drop{
+    public struct TimeEvent has copy,drop{
         time:u64
     }
 

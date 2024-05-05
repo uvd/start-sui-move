@@ -1,13 +1,12 @@
-# 快速入门Sui Move 并构建一个简单小应用
+# 快速入门Move 并构建一个简单小应用
 
 
 ## 什么是Move
 - 一种特殊领域的计算机编程语言，俗称智能合约编程语言，语法类似Rust 编程语言
 - 真正面向资产编程，一个token是资产，一篇文章也是资产，一条日志也是资产
-- 代码库  https://github.com/move-language
 - 书籍 https://move-book.com/
 - 书籍 https://examples.sui.io/
-- 书籍 https://docs.sui.io/build/move
+- 书籍 https://docs.sui.io/guides/developer/sui-101
 - 书籍+视频 https://github.com/sui-foundation/sui-move-intro-course
 
 
@@ -20,10 +19,10 @@
 
 - 用move智能合约编程语言在上面开发应用的高性能区块链底层系统，是L1
 - 优点 高TPS，低GAS ，更适合构建并发高，操作频繁的应用
-- 创新共识  需要全局共识才共识，A给B转账本身不需要全局共识，极大提高了TPS   [详细介绍](https://docs.sui.io/learn/architecture/consensus)
+- 创新共识  需要全局共识才共识，A给B转账本身不需要全局共识，极大提高了TPS   [详细介绍](https://docs.sui.io/concepts/sui-architecture/consensus)
 - 可以无限水平扩容
 - 快速了解Sui如何工作 https://docs.sui.io/learn/how-sui-works
-- 经济模型 https://docs.sui.io/learn/tokenomics
+- 经济模型 https://docs.sui.io/concepts/tokenomics
 - 官网 https://sui.io/
 - 代码库 https://github.com/MystenLabs/sui
 - 学习文档 https://docs.sui.io/
@@ -35,7 +34,7 @@
 - 目前大家手机里面的App 大部分都可以用Move在Sui在构建一次
 
 
-## 快速入门Sui Move
+## 快速入门Move
 
 ### 强类型
 - Move 是一种强类型的编程语言，所有的数据结构都必须被显式的申明数据类型
@@ -49,7 +48,7 @@
 - `u256`
 - `bool`
 
-```rust
+```move
    fun main() {
         // define empty variable, set value later
         let a: u8;
@@ -97,7 +96,7 @@
 - 和 C Rust GO的struct一致，C++ Java Swift Javascript面向对象编程语言的类类似
 
 ```rust
-struct DonutShop has key {
+public struct DonutShop has key {
     id: UID,
     price: u64,
     balance: Balance<SUI>
@@ -131,7 +130,7 @@ module examples::one_timer {
     use sui::object::{Self, UID};
     use sui::tx_context::{Self, TxContext};
 
-    struct CreatorCapability has key {
+    public struct CreatorCapability has key {
         id: UID
     }
 
@@ -146,25 +145,24 @@ module examples::one_timer {
 
 ### 方法访问控制
 
-| 方法签名 | 调用范围          | 返回值  |
-| :-----|:--------------|:-----|
-| fun call() | 模块内调用         | 可以有  |
-| public fun call() | 只能模块能调用       | 可以有  |
-| public entry fun call() | 模块能调用，DApp能调用 | 暂时没有 |
-| entry fun call() | 只能DApp调用      | 暂时没有 |
-| public(friend) fun call() | 指定模块调用        | 可以有  |
-
+| 方法签名                       | 调用范围          | 返回值  |
+|:---------------------------|:--------------|:-----|
+| fun call()                 | 模块内调用         | 可以有  |
+| public fun call()          | 只能模块能调用       | 可以有  |
+| public entry fun call()    | 模块能调用，DApp能调用 | 暂时没有 |
+| entry fun call()           | 只能DApp调用      | 暂时没有 |
+| public(package) fun call() | 当前模块调用        | 可以有  |
 
 
 ### 泛型
 - move 支持在调用动态的确定数据类型
 ```rust
 
-    struct Box_U64 {
+    public struct Box_U64 {
         value: u64
     }
 
-     struct Box<T> {
+    public struct Box<T> {
          value: T
      }
 
@@ -190,7 +188,7 @@ struct T has copy,drop {}
 ```
 - `copy`  被修饰的值可以被复制。
 - `drop`  被修饰的值在作用域结束时可以被丢弃。
-- `key`  被修饰的值可以作为键值对全局状态进行访问。
+- `key`   被修饰的值可以作为键值对全局状态进行访问。
 - `store`  被修饰的值可以被存储到全局状态
 
 ### 能力的组合使用
@@ -210,9 +208,9 @@ module examples::item {
     use std::string::{Self, String};
     use sui::tx_context::{Self, TxContext};
 
-    struct AdminCap has key { id: UID }
+    public struct AdminCap has key { id: UID }
     
-    struct Item has key, store { id: UID, name: String }
+    public struct Item has key, store { id: UID, name: String }
     
     fun init(ctx: &mut TxContext) {
         transfer::transfer(AdminCap {
@@ -236,10 +234,10 @@ module examples::item {
 ## sui object
 - 必须有`key` 能力，第一个字段必须是id 类型是UID类型
 - sui 上的资产都是对象，万物都是对象的意思（every thing is NFT）
-- 详细教程 https://docs.sui.io/build/programming-with-objects/ch1-object-basics
+- 详细教程 https://docs.sui.io/concepts/object-model
 
 ```rust 
-struct DonutShop has key {
+public  struct DonutShop has key {
     id: UID,
     price: u64,
     balance: Balance<SUI>
@@ -257,33 +255,34 @@ struct DonutShop has key {
 - 如何改变对象所有权限 参考 `Sui Framework` [transfer](https://github.com/MystenLabs/sui/blob/main/crates/sui-framework/packages/sui-framework/sources/transfer.move)
 
 ## 合约可升级
-- `Sui Move` 已经上链的合约有一个升级规则可以升级合约
-- 详细文档 https://docs.sui.io/build/package-upgrades
+- `Move` 已经上链的合约有一个升级规则可以升级合约
+- 详细文档 https://docs.sui.io/concepts/sui-move-concepts/packages/upgrade
 
 ## Sui Framework
-- 是`Sui Move` 的标准库，内置了一些常用的包，比如对标以太坊ERC20，NFT标准
+- 是`Move` 的标准库，内置了一些常用的包，比如对标以太坊ERC20，NFT标准
 - 复杂数据类型，容器类
 - 密码学学相关的库，零知识证明（ZKP）
-- `Sui Move` 和 虚拟机交互的库
+- `Move` 和 虚拟机交互的库
 - 代码库 https://github.com/MystenLabs/sui/tree/main/crates/sui-framework
 
-## Sui Move by Example 
--  Sui 官方维护了一本非常好的例子的书和很多Sui Move的例子代码库
+## Move by Example 
+-  Sui 官方维护了一本非常好的例子的书和很多Move的例子代码库
 -  https://examples.sui.io/  	
 -  https://github.com/MystenLabs/sui/tree/main/sui_programmability/examples
 
-## JSON RPC
+## RPC
 - 其他编程语言和`Sui`公链，`Move`智能合约交互的通用接口，就是服务的后端接口
-- 详细文档 https://docs.sui.io/sui-jsonrpc
+- 详细文档 https://docs.sui.io/references/sui-api
 
 ## SDK 和 RPC交互
-- [typescript](https://github.com/MystenLabs/sui/tree/main/sdk/typescript)
+- [typescript](https://sdk.mystenlabs.com/typescript)
+- [dapp kit](https://sdk.mystenlabs.com/dapp-kit)
 
 
 #  接下来现场coding环节 并完整的演示如何上链并且查看数据
 
 ## 安装和使用 Sui CLI 
-- https://docs.sui.io/build/install
+- https://docs.sui.io/guides/developer/getting-started/sui-install
 - https://github.com/MystenLabs/sui/releases
 
 ## 网络选择 
@@ -294,7 +293,10 @@ struct DonutShop has key {
 
 ### 测试网RPC选择
 - https://fullnode.testnet.sui.io/
-- 选择更多 https://mp.weixin.qq.com/s/PdBSdiIMfZOzK6nG1915YQ
+- [RPC](https://github.com/move-cn/awesome-sui#rpc)
+
+
+
 
 
 ## 一个简单bolg的完整例子
@@ -307,13 +309,13 @@ module blog_demo::bolg {
     use sui::object;
     use sui::transfer;
 
-    struct Blog has key {
+    public struct Blog has key {
         id: UID,
         title: String,
         content: String
     }
 
-    struct TimeEvent has copy,drop{
+    public struct TimeEvent has copy,drop{
         time:u64
     }
 
@@ -349,14 +351,18 @@ module blog_demo::bolg {
 - 需要理解如果用`Move`做权限控制
 - 用户需要支付一定的费用（GAS）
 
-
+## 水龙头
+- [官方](https://docs.sui.io/guides/developer/getting-started/get-coins)
+- [钱包
+- [getsui](https://github.com/uvd/sui-faucet)
+- [discord](https://discord.gg/sui)
 
 ## 浏览器  
 - 查看交易信息，对象信息，地址信息等
-- https://explorer.sui.io/
+- https://suivision.xyz/
+- https://suiscan.xyz/
 
-# 如何获取测试SUI
-- [discord](https://discord.gg/sui)
+
 ## sui 官方钱包
 - 用户管理资产，转账，交易签名等
 - 下载地址 https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil
@@ -365,38 +371,23 @@ module blog_demo::bolg {
 ## 接下来需要做什么
 - 需要实现前端 参考 [wallet-kit]https://github.com/MystenLabs/sui/tree/main/sdk/wallet-adapter/wallet-kit
 - 需要有一个完整的分页方案
-- 这个例子只是一个快速入门为引子，需要我们可以用Sui Move 做哪些东西？欢迎大家放飞自我，想到一个真正的现象级项目
+- 这个例子只是一个快速入门为引子，需要我们可以用Move 做哪些东西？欢迎大家放飞自我，想到一个真正的现象级项目
 
 
-## 目前Sui已经开启主网系列Event
-- `mainnet` 系列 event，详细关注 https://twitter.com/SuiNetwork
-- 上线永久测试网 已经在3月29号完成  https://sui.io/resources-sui/announcing-permanent-testnet/
-- `Sui Builder House` https://blog.suifoundation.org/announcing-the-2023-sui-builder-house-world-tour/
-- 14号-16号 build house + demo day   https://github.com/sui-foundation/sui-demo-day-hk
-- 大使计划 https://ambassadors.sui.io/
-- 上线 `mainnet`  预计今年这个季度完成
-
-## 对Sui Move未来的展望
+## 对Move未来的展望
 - 起于区块链，不止于区块链
 - Sui能真正把Move构建的应用带入日常生活中各个领域，真正实现下一个10亿用户级别的应用
 
 ## Sui Foundation
-- The Sui Foundation is an independent organization that grows and cultivates long-term value in the Sui ecosystem. Importantly, the Sui Foundation supports creating products that enable individuals and creators to have unprecedented ownership over their data and content
-- Developer Grants Program https://suifoundation.org/#grants
-- 官网 https://suifoundation.org/
+- 官网 https://sui.io/
 - 推特 https://twitter.com/suifoundation
 
 
 ## 关注我们
 - 推特 https://twitter.com/SuiNetwork
-- 官方中文支持Telegram  https://t.me/+U6IlwHdAeSRhYzc1
+- 官方中文支持Telegram [Sui中文](https://t.me/sui_dev_cn)  [move中文](https://t.me/move_cn)
 - 官方社群支持 https://linktr.ee/sui_apac
 
-
-
-## 联系我 UVD Sui技术大使
-- https://twitter.com/wangtxxl
-- https://t.me/wangtxxl
 
 
 

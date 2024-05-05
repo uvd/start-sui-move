@@ -1,10 +1,10 @@
 [package]
 name = "blog_demo"
 version = "0.0.1"
+edition = "2024.beta"
 
 [dependencies]
-Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "49a21347361372485ff0cc45b17ff89ad2a6ec67" }
+Sui = { git = "https://gitee.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
 
 [addresses]
 blog_demo =  "0x0"
-sui =  "0000000000000000000000000000000000000000000000000000000000000002"
