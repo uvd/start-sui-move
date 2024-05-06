@@ -368,10 +368,8 @@ module blog_demo::bolg {
 - 下载地址 https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil
 
 
-## 接下来需要做什么
-- 需要实现前端 参考 [wallet-kit]https://github.com/MystenLabs/sui/tree/main/sdk/wallet-adapter/wallet-kit
-- 需要有一个完整的分页方案
-- 这个例子只是一个快速入门为引子，需要我们可以用Move 做哪些东西？欢迎大家放飞自我，想到一个真正的现象级项目
+## dapp kit 
+- https://sdk.mystenlabs.com/dapp-kit/create-dapp
 
 
 ## 对Move未来的展望
