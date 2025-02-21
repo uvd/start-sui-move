@@ -5,7 +5,6 @@
 - 一种特殊领域的计算机编程语言，俗称智能合约编程语言，语法类似Rust 编程语言
 - 真正面向资产编程，一个token是资产，一篇文章也是资产，一条日志也是资产
 - 书籍 https://move-book.com/
-- 书籍 https://examples.sui.io/
 - 书籍 https://docs.sui.io/guides/developer/sui-101
 - 书籍+视频 https://github.com/sui-foundation/sui-move-intro-course
 
@@ -125,10 +124,7 @@ fun init(ctx: &mut TxContext){}
 fun init(witness: Struct, ctx: &mut TxContext) {}
 ```
 ```move
-module examples::one_timer {
-    use sui::transfer;
-    use sui::object::{Self, UID};
-    use sui::tx_context::{Self, TxContext};
+module examples::one_timer;
 
     public struct CreatorCapability has key {
         id: UID
@@ -139,7 +135,7 @@ module examples::one_timer {
             id: object::new(ctx),
         }, tx_context::sender(ctx))
     }
-}
+
 ```
 
 
@@ -302,45 +298,37 @@ public  struct DonutShop has key {
 ## 一个简单bolg的完整例子
 
 ```move
-module blog_demo::bolg {
-    use sui::object::UID;
-    use std::string::String;
-    use sui::tx_context::{TxContext};
-    use sui::object;
-    use sui::transfer;
+module blog_demo::bolg ;
 
-    public struct Blog has key {
-        id: UID,
-        title: String,
-        content: String
-    }
+use std::string::String;
 
-    public struct TimeEvent has copy,drop{
-        time:u64
-    }
-
-    // add blog
-    public entry fun add(title: String, content: String, ctx: &mut TxContext) {
-        let blog = Blog {
-            id: object::new(ctx),
-            title,
-            content
-        };
-        transfer::share_object(blog);
-    }
-
-    // update title
-    public entry fun update_title(blog: &mut Blog, title: String) {
-        blog.title = title
-    }
-
-    // delete blog
-    public entry fun delete_bolg(blog:Blog){
-        let Blog{id,title:_,content:_} = blog;
-        object::delete(id);
-    }
+public struct Blog has key {
+    id: UID,
+    title: String,
+    content: String
 }
 
+
+// add blog
+public entry fun add(title: String, content: String, ctx: &mut TxContext) {
+    let blog = Blog {
+        id: object::new(ctx),
+        title,
+        content
+    };
+    transfer::share_object(blog);
+}
+
+// update title
+public entry fun update_title(blog: &mut Blog, title: String) {
+    blog.title = title
+}
+
+// delete blog
+public entry fun delete_bolg(blog: Blog) {
+    let Blog { id, title: _, content: _ } = blog;
+    object::delete(id);
+}
 ```
 
 ## 对比传统构建应用的方式
